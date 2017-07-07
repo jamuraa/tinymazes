@@ -1,19 +1,11 @@
 # TinyMazes
 
-**TODO: Add description**
+Let's share some mazes with the world!
 
-## Installation
+## Using
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `tinymazes` to your list of dependencies in `mix.exs`:
+I don't know how to use this yet.  Still working it out.
 
-```elixir
-def deps do
-  [{:tinymazes, "~> 0.1.0"}]
-end
-```
+## History
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/tinymazes](https://hexdocs.pm/tinymazes).
-
+This project was started as a way for [@jamuraa](http://twitter.com/jamuraa) to learn [Elixir](http://elixir-lang.org).
