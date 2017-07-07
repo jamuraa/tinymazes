@@ -28,6 +28,8 @@ defmodule TinyMazes.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:extwitter, "~> 0.8"}
+    ]
   end
 end

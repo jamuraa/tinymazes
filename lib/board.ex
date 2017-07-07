@@ -143,7 +143,7 @@ defmodule Board do
   end
 
   def unicode(%Board{rows: rows, cols: cols} = b) when rows > 2 and cols > 2 do
-    unicode(Board.area(b, 0, 0, 1, cols - 1)) <> "\r\n" <> unicode(Board.area(b, 2, 0, rows - 1, cols - 1))
+    unicode(Board.area(b, 0, 0, 1, cols - 1)) <> "\n" <> unicode(Board.area(b, 2, 0, rows - 1, cols - 1))
   end
 
   def make_grid(rows, cols) when rem(rows, 2) == 1 and rem(cols, 2) == 1 do

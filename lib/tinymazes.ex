@@ -69,7 +69,6 @@ defmodule TinyMazes do
   end
 
   defp complete_maze(%Board{} = board, valid_spots \\ :gen) do
-    board |> empty_trees |> Board.print_unicode
     case valid_spots do
       :gen -> complete_maze(board, Enum.shuffle(find_spots(board)))
       [] -> board
@@ -77,7 +76,11 @@ defmodule TinyMazes do
     end
   end
 
-  def make_basic(rows \\ 43, cols \\ 43) do
-    Board.make_grid(rows, cols) |> open_startend |> fill_trees |> complete_maze
+  def make_basic(rows \\ 21, cols \\ 21) do
+    Board.make_grid(rows, cols) |> open_startend |> fill_trees |> complete_maze |> empty_trees
+  end
+
+  def post do
+    make_basic() |> Board.unicode |> ExTwitter.update
   end
 end
