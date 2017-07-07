@@ -2,10 +2,14 @@
 
 Let's share some mazes with the world!
 
-## Using
+## Usage
 
-I don't know how to use this yet.  Still working it out.
+Configure ExTwitter by adding your secret keys to config/config.exs
+
+mix run -e TinuMazes.post
 
 ## History
 
 This project was started as a way for [@jamuraa](http://twitter.com/jamuraa) to learn [Elixir](http://elixir-lang.org).
+
+It's currently being used to post a maze every half an hour to [@TinyMazes](http://twitter.com/TinyMazes).
