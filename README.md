@@ -6,7 +6,7 @@ Let's share some mazes with the world!
 
 Configure ExTwitter by adding your secret keys to config/config.exs
 
-mix run -e TinuMazes.post
+mix run -e TinyMazes.post
 
 ## History
 
