@@ -1,4 +1,5 @@
-require Baord
+require Board
+require Integer
 
 defmodule TinyMazes do
   @moduledoc """
