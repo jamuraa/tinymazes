@@ -72,7 +72,7 @@ defmodule TinyMazes do
     end
   end
 
-  def make_basic(rows \\ 21, cols \\ 21) do
+  def make_basic(rows \\ 31, cols \\ 31) do
     Board.make_grid(rows, cols) |> open_startend |> fill_trees |> complete_maze |> empty_trees
   end
 
