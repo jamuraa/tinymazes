@@ -14,10 +14,6 @@ defmodule TinyMazes do
       iex> TinyMazes.make_basic(5, 5)
 
   """
-  def hello do
-    :world
-  end
-
   defp empty_spots(spots, board) do
     Enum.reduce(spots, board, fn ([x, y], b) -> Board.empty(b, x, y) end)
   end
@@ -81,6 +77,6 @@ defmodule TinyMazes do
   end
 
   def post do
-    make_basic() |> Board.unicode |> ExTwitter.update
+    make_basic() |> Board.unicode_braille |> ExTwitter.update
   end
 end

@@ -80,15 +80,50 @@ defmodule Board do
     |> Enum.join |> IO.puts
   end
 
-  def print_unicode(%Board{} = b) do
-    b |> unicode |> IO.puts
+  def print_unicode_blocks(%Board{} = b) do
+    b |> unicode_blocks |> IO.puts
+  end
+
+  def print_unicode_braille(%Board{} = b) do
+    b |> unicode_braille |> IO.puts
   end
 
   def area(%Board{pixels: p, rows: rows, cols: cols}, x1, y1, x2, y2) when x2 >= x1 and y2 >= y1 and x2 < rows and y2 < cols do
     %Board{rows: x2 - x1 + 1, cols: y2 - y1 + 1, pixels: Enum.flat_map(x1..x2, fn (x) -> Enum.slice(p, x * cols + y1, y2 - y1 + 1) end)}
   end
 
-  def unicode(%Board{pixels: p, rows: 2, cols: 2}) do
+
+  def if_filled(%Board{} = b, row, col, num) do
+    if Board.at(b, row, col) == ?x do
+      num
+    else
+      0
+    end
+  end
+
+  def unicode_braille(%Board{rows: 4, cols: c} = b) when c < 3 do
+    unicode = 0x2800 + if_filled(b, 0, 0, 0x01) + if_filled(b, 1, 0, 0x02) + if_filled(b, 2, 0, 0x04) + if_filled(b, 3, 0, 0x40)
+    unicode = if (c > 1) do
+      unicode + if_filled(b, 0, 1, 0x08) + if_filled(b, 1, 1, 0x10) + if_filled(b, 2, 1, 0x20) + if_filled(b, 3, 1, 0x80)
+    else
+      unicode
+    end
+    << unicode :: utf8 >>
+  end
+
+  def unicode_braille(%Board{pixels: p, rows: r, cols: cols}) when r < 4 do
+    unicode_braille(%Board{rows: 4, cols: cols, pixels: (p ++ list_x(4 - r, list_x(cols, ['.'])))})
+  end
+
+  def unicode_braille(%Board{rows: 4, cols: cols} = b) when cols > 2 do
+    unicode_braille(Board.area(b, 0, 0, 3, 1)) <> unicode_braille(Board.area(b, 0, 2, 3, cols - 1))
+  end
+
+  def unicode_braille(%Board{rows: rows, cols: cols} = b) when rows > 3 do
+    unicode_braille(Board.area(b, 0, 0, 3, cols - 1)) <> "\n" <> unicode_braille(Board.area(b, 4, 0, rows - 1, cols - 1))
+  end
+
+  def unicode_blocks(%Board{pixels: p, rows: 2, cols: 2}) do
     case p do
       'x...' -> "\u2598"
       '.x..' -> "\u259D"
@@ -109,7 +144,7 @@ defmodule Board do
     end
   end
 
-  def unicode(%Board{pixels: p, rows: 1, cols: 2}) do
+  def unicode_blocks(%Board{pixels: p, rows: 1, cols: 2}) do
     case p do
       '..' -> "\u2591"
       'x.' -> "\u2598"
@@ -118,7 +153,7 @@ defmodule Board do
     end
   end
 
-  def unicode(%Board{pixels: p, rows: 2, cols: 1}) do
+  def unicode_blocks(%Board{pixels: p, rows: 2, cols: 1}) do
     case p do
       '..' -> "\u2591"
       'x.' -> "\u2598"
@@ -127,23 +162,23 @@ defmodule Board do
     end
   end
 
-  def unicode(%Board{pixels: p, rows: 1, cols: 1}) do
+  def unicode_blocks(%Board{pixels: p, rows: 1, cols: 1}) do
     case p do
       '.' -> "\u2591"
       'x' -> "\u2598"
     end
   end
 
-  def unicode(%Board{rows: 1, cols: cols} = b) when cols > 2 do
-    unicode(Board.area(b, 0, 0, 0, 1)) <> unicode(Board.area(b, 0, 2, 0, cols - 1))
+  def unicode_blocks(%Board{rows: 1, cols: cols} = b) when cols > 2 do
+    unicode_blocks(Board.area(b, 0, 0, 0, 1)) <> unicode_blocks(Board.area(b, 0, 2, 0, cols - 1))
   end
 
-  def unicode(%Board{rows: 2, cols: cols} = b) when cols > 2 do
-    unicode(Board.area(b, 0, 0, 1, 1)) <> unicode(Board.area(b, 0, 2, 1, cols - 1))
+  def unicode_blocks(%Board{rows: 2, cols: cols} = b) when cols > 2 do
+    unicode_blocks(Board.area(b, 0, 0, 1, 1)) <> unicode_blocks(Board.area(b, 0, 2, 1, cols - 1))
   end
 
-  def unicode(%Board{rows: rows, cols: cols} = b) when rows > 2 and cols > 2 do
-    unicode(Board.area(b, 0, 0, 1, cols - 1)) <> "\n" <> unicode(Board.area(b, 2, 0, rows - 1, cols - 1))
+  def unicode_blocks(%Board{rows: rows, cols: cols} = b) when rows > 2 and cols > 2 do
+    unicode_blocks(Board.area(b, 0, 0, 1, cols - 1)) <> "\n" <> unicode_blocks(Board.area(b, 2, 0, rows - 1, cols - 1))
   end
 
   def make_grid(rows, cols) when rem(rows, 2) == 1 and rem(cols, 2) == 1 do
