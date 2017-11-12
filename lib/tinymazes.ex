@@ -72,11 +72,11 @@ defmodule TinyMazes do
     end
   end
 
-  def make_basic(rows \\ 31, cols \\ 31) do
+  def make_basic(rows \\ 11, cols \\ 11) do
     Board.make_grid(rows, cols) |> open_startend |> fill_trees |> complete_maze |> empty_trees
   end
 
   def post do
-    make_basic() |> Board.unicode_braille |> ExTwitter.update
+    make_basic() |> Board.emoji |> ExTwitter.update
   end
 end

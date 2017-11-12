@@ -181,6 +181,28 @@ defmodule Board do
     unicode_blocks(Board.area(b, 0, 0, 1, cols - 1)) <> "\n" <> unicode_blocks(Board.area(b, 2, 0, rows - 1, cols - 1))
   end
 
+  @garden ['🍄', '🌳', '🌲', '🌻', '⛲', # Mushroom, Tree, Evergreen,, Sunflower, Fountain
+           '🌳', '🌳', '🌲', '🌲', # Tree x 4
+           '🌳', '🌳', '🌲', '🌲'] # Evergreen x 4
+  @city ['🏫', '🏢', '🏥', '🏦', '🏨',  # School, Office, Hospital, Bank, Hotel,
+         '🏤', '🏬', '🏭', '🏗', '🏙'] # Euro Post Office, Department Store, Factory, Construction, Cityscape
+  @moons ['🌑']
+
+  @themes [@garden, @city, @moons]
+
+  def emoji(theme, %Board{pixels: p, rows: 1}) do
+    p |> Enum.map(fn (x) -> if x == ?x, do: Enum.random(theme), else: '🌕' end) |> Enum.join
+  end
+
+  def emoji(theme, %Board{rows: rows, cols: cols} = b) when rows > 1 do
+    emoji(theme, Board.area(b, 0, 0, 0, cols - 1)) <> "\n" <> emoji(theme, Board.area(b, 1, 0, rows - 1, cols - 1))
+  end
+
+  def emoji(%Board{} = b) do
+    theme = Enum.random(@themes)
+    emoji(theme, b)
+  end
+
   def make_grid(rows, cols) when rem(rows, 2) == 1 and rem(cols, 2) == 1 do
     %Board{rows: rows, cols: cols, pixels: list_x(div(rows,2), list_x(cols, ['x']) ++ list_x(div(cols,2), ['x','.']) ++ ['x']) ++ list_x(cols, ['x'])}
   end
