@@ -186,9 +186,12 @@ defmodule Board do
            '🌳', '🌳', '🌲', '🌲'] # Evergreen x 4
   @city ['🏫', '🏢', '🏥', '🏦', '🏨',  # School, Office, Hospital, Bank, Hotel,
          '🏤', '🏬', '🏭', '🏗', '🏙'] # Euro Post Office, Department Store, Factory, Construction, Cityscape
+  @spoopy ['🌽', '🕷', '🎃', '🦇', # Corn, Spider, Jack o lantern, Bat,
+           '🕸', '👻', '💀', # Spiderweb, Ghost, Skull
+          '🌱', '🌱', '🌱', '🌱', '🌱'] # Seedling x 5
   @moons ['🌑']
 
-  @themes [@garden, @city, @moons]
+  @themes [@garden, @city, @moons, @spoopy]
 
   def emoji(theme, %Board{pixels: p, rows: 1}) do
     p |> Enum.map(fn (x) -> if x == ?x, do: Enum.random(theme), else: '🌕' end) |> Enum.join
